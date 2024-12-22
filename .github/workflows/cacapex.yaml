@@ -1,7 +1,7 @@
 name: cac apex
 on:
   schedule:
-    - corn: 0 0 1 * ?
+    - corn: '0 0 1 * ?'
   workflow_dispatch:
 
 jobs:
