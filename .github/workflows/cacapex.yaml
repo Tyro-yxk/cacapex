@@ -4,20 +4,21 @@ on:
     - corn: 0 0 1 * ?
   workflow_dispatch:
 
-  jobs:
-    get_cac_apex:
-      runs-on: ubuntu-latest
-      steps:
-        - name: checkout
-          uses: actions/checkout@v3
-          with:
-            ref: main
-        - name: get
-          uses: actions/setup-python@v2
-          with:
-            python-version: '3.10.x'
-            architecture: 'x64'
-        - run: pip install -r ./requirements.txt && python ./main.py
+jobs:
+  get_cac_apex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: get
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.x'
+          architecture: 'x64'
+      - run: pip install -r ./requirements.txt && python ./main.py
 
   env:
     USER_LIST: ${{secrets.USER_LIST}}
+
