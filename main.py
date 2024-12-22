@@ -1,4 +1,5 @@
 import json
+import os
 import re
 
 import requests
@@ -95,20 +96,18 @@ def pay_order(url, order_id, headers=None):
     return pay
 
 
+user_list = os.environ["USER_LIST"].strip().split(";")
+
 # 登录 获取token
 url = "https://cacapex.com"
 
 useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0"
-user = [{
-    "email": "tyroyang666@163.com",
-    "password": "Tyro.1234"
-}, {
-    "email": "tyroyang@foxmail.com",
-    "password": "Tyro.1234"
-}, {
-    "email": "tyroyang666@gmail.com",
-    "password": "Tyro.1234"
-}]
+user = []
+
+for i, u_list in enumerate(user_list):
+    email = u_list.split(",")[0]
+    password = u_list.split(",")[1]
+    user.append({"email": email, "password": password})
 
 connectivity_test(url)
 url = url + "/api/v1"
