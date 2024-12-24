@@ -1,6 +1,6 @@
 # cacapex
 
-利用[github action](actions)自动获取cacapex免费订阅
+利用[github action](/actions)自动获取cacapex免费订阅
 创建环境变量<font color='red'>***USER_LIST***</font>，格式如下：
 ```text
     userName1,password2;username2,password2;email3,password3
