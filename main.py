@@ -43,7 +43,7 @@ def get_fetch_list() -> str:
     return _free_id
 
 
-def free_fetch():
+def free_fetch() -> str:
     _exchange_id = None
     response = requests.get(url + f"/user/plan/fetch?t={token}&id={free_id}", headers=headers)
     if response.status_code == 200:
@@ -81,7 +81,7 @@ def create_order() -> str:
 
 
 # 支付订单
-def pay_order():
+def pay_order() -> bool:
     _pay = False
     data = {
         "trade_no": order_id,
@@ -116,31 +116,31 @@ for user in user:
     # 登录
     token, authorization = login(user["email"], user["password"], {"User-Agent": useragent})
     if token is None or authorization is None:
-        print("登录失败")
+        print(f"{user['email']}===登录失败")
         continue
     headers = {"User-Agent": useragent, "Authorization": authorization}
     # 获取订阅列表中的免费订阅id
     free_id = get_fetch_list()
     if free_id is None:
-        print("获取免费ID失败")
+        print(f"{user['email']}===获取免费ID失败")
         continue
     # 从详情总获取兑换码
     exchange_id = free_fetch()
     if exchange_id is None:
-        print("兑换码获取失败")
+        print(f"{user['email']}===兑换码获取失败")
         continue
     # 验证兑换码
     limit_period = check_fetch()
     if limit_period is None:
-        print("兑换码检验失败")
+        print(f"{user['email']}===兑换码检验失败")
         continue
     # 生成订单
     order_id = create_order()
     if order_id is None:
-        print("订单创建失败")
+        print(f"{user['email']}===订单创建失败")
         continue
     # 支付
     pay = pay_order()
     if not pay:
-        print("支付失败")
+        print(f"{user['email']}===支付失败")
         continue
