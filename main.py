@@ -96,7 +96,7 @@ def pay_order() -> bool:
     return _pay
 
 
-user_list = os.environ["USER_LIST"].strip().split(";")
+user_list = os.environ["USER_LIST"]
 
 # 登录 获取token
 url = "https://cacapex.com"
@@ -104,6 +104,19 @@ url = "https://cacapex.com"
 useragent = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 "
              "Safari/537.36 Edg/131.0.0.0")
 user = []
+
+
+# 格式化用户数据
+def format_user_list():
+    global user_list
+    _format = ['\n', ';']
+    for i in _format:
+        if i in user_list:
+            user_list = user_list.replace(i, ';')
+    user_list = user_list.split(";")
+
+
+format_user_list()
 
 for i, u_list in enumerate(user_list):
     email = u_list.split(",")[0]
