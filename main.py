@@ -126,51 +126,46 @@ for i, u_list in enumerate(user_list):
 connectivity_test()
 url = url + "/api/v1"
 error_list = {
-    400: [],
-    401: [],
-    404: []
+    "Login_Error": [],
+    "Get_Free_ID_Error": [],
+    "Get_Redeem_Code_error": [],
+    "Check_Redeem_Code_Error": [],
 }
 for user in user:
     # 登录
     token, authorization = login(user["email"], user["password"], {"User-Agent": useragent})
     if token is None or authorization is None:
-        error_list[401].append(user["email"])
-        print(f"{user['email']}===登录失败")
+        error_list["Login_Error"].append(user["email"])
         continue
     headers = {"User-Agent": useragent, "Authorization": authorization}
     # 获取订阅列表中的免费订阅id
     free_id = get_fetch_list()
     if free_id is None:
-        error_list[404].append(user["email"])
-        print(f"{user['email']}===获取免费ID失败")
+        error_list["Get_Free_ID_Error"].append(user["email"])
         continue
     # 从详情总获取兑换码
     exchange_id = free_fetch()
     if exchange_id is None:
-        error_list[404].append(user["email"])
-        print(f"{user['email']}===兑换码获取失败")
+        error_list["Get_Redeem_Code_error"].append(user["email"])
         continue
     # 验证兑换码
     limit_period = check_fetch()
     if limit_period is None:
-        error_list[400].append(user["email"])
-        print(f"{user['email']}===兑换码{exchange_id}检验失败")
+        error_list["Check_Redeem_Code_Error"].append(user["email"])
         continue
     # 生成订单
     order_id = create_order()
     if order_id is None:
-        error_list[400].append(user["email"])
-        print(f"{user['email']}===订单创建失败")
+        error_list["Create_Order_Error"].append(user["email"])
         continue
     # 支付
     pay = pay_order()
     if not pay:
-        error_list[400].append(user["email"])
-        print(f"{user['email']}===支付失败")
+        error_list["Order_Pay_Error"].append(user["email"])
         continue
 error_index = 0
 for error in error_list:
     if error_list[error]:
         error_index += 1
-        print(f"错误码{error}：{error_list[error]}")
+        print(f"{error}：{error_list[error]}")
 exit(error_index)
