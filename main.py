@@ -89,7 +89,7 @@ def pay_order() -> bool:
     }
     response = requests.post(url + "/user/order/checkout", data=data, headers=headers)
     if response.status_code == 200:
-        print(response.json(), "\n支付成功")
+        print("支付成功")
         _pay = True
     else:
         print(response.json())
