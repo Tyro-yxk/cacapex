@@ -19,6 +19,7 @@ def connectivity_test(timeout=10):
         exit(-1)
 
 
+#  登录获取token
 def login(_email, _password, _headers=None) -> tuple[str, str]:
     _token = None
     _authorization = None
@@ -33,6 +34,7 @@ def login(_email, _password, _headers=None) -> tuple[str, str]:
     return _token, _authorization
 
 
+# 获取免费套餐id
 def get_fetch_list() -> str:
     _free_id = None
     response = requests.get(url + f"/user/plan/fetch?t={token}", headers=headers)
@@ -43,6 +45,7 @@ def get_fetch_list() -> str:
     return _free_id
 
 
+# 获取兑换码
 def free_fetch() -> str:
     _exchange_id = None
     response = requests.get(url + f"/user/plan/fetch?t={token}&id={free_id}", headers=headers)
@@ -55,6 +58,7 @@ def free_fetch() -> str:
     return _exchange_id
 
 
+# 验证兑换码
 def check_fetch() -> str:
     data = {
         "code": exchange_id,
@@ -63,10 +67,14 @@ def check_fetch() -> str:
     _limit_period = None
     response = requests.post(url + "/user/coupon/check", data=data, headers=headers)
     if response.status_code == 200:
-        _limit_period = response.json()["data"]["limit_period"][0]
+        if response.json()["data"]["limit_period"] is not None:
+            _limit_period = response.json()["data"]["limit_period"]
+        else:
+            _limit_period = "limit_period"
     return _limit_period
 
 
+# 创建订单
 def create_order() -> str:
     data = {
         "plan_id": free_id,
