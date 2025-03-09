@@ -70,7 +70,7 @@ def check_fetch() -> str:
         if response.json()["data"]["limit_period"] is not None:
             _limit_period = response.json()["data"]["limit_period"]
         else:
-            _limit_period = "limit_period"
+            _limit_period = "month_price"
     return _limit_period
 
 
