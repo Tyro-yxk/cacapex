@@ -10,8 +10,8 @@ jobs:
       - name: get
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10.x'
-          architecture: 'x64'
+          python-version: "3.10.x"
+          architecture: "x64"
       - run: pip install -r ./requirements.txt && python ./main.py
 
     env:
@@ -20,7 +20,4 @@ jobs:
 name: cac apex
 on:
   schedule:
-  - cron:  '0 0 10 * ?'
-  workflow_dispatch:
-
-
+    - cron: "0 0 10 * *"
